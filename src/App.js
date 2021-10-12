@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-function Header(props){
+function Header(props) {
   return (
     <header>
       <h1>{props.name}'s Kitchen</h1>
@@ -9,27 +9,44 @@ function Header(props){
   );
 }
 
-function Main(){
-  return(
+function Main(props) {
+  return (
     <section>
-      <p>We serve the most delisious food around.</p>
+      <p>We serve the most {props.adjective} food around.</p>
+      <ul style={{ textAlign: "left" }}>
+        {props.dishes.map((dish) =>
+          <li key={dish.id}>{dish.title}</li>
+        )}
+      </ul>
     </section>
   );
 }
 
-function Footer(){
-  return(
+function Footer(props) {
+  return (
     <footer>
-      <p>It's true</p>
+      <p>Copyright {props.year}</p>
     </footer>
   );
 }
+
+
+
+const dishes = [
+  "Rost chicken with salad",
+  "Lamb kebab",
+  "Stake sandwich"
+];
+
+const dishesObject = dishes.map((dish, i) => ({ id: i, title: dish }))
+console.log(dishesObject)
+
 function App() {
   return (
     <div className="App">
-      <Header name="Isuru"/>
-      <Main/>
-      <Footer/>
+      <Header name="Nakamoto" />
+      <Main adjective="amazing" dishes={dishesObject} />
+      <Footer year={new Date().getFullYear()} />
     </div>
   );
 }
