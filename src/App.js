@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import kitchen from './kitchen.jpg';
 import './App.css';
 
@@ -15,9 +15,9 @@ function Main(props) {
   return (
     <section>
       <p>We serve the most {props.adjective} food around.</p>
-      <img 
-        alt="classic looking kitchen" 
-        src={kitchen} 
+      <img
+        alt="classic looking kitchen"
+        src={kitchen}
         height={200}
       />
       <ul style={{ textAlign: "left" }}>
@@ -53,51 +53,78 @@ Conditional Rendering
 */
 
 // Function for secret components
-function SecretComponents (){
+function SecretComponents() {
   return (
     <h1>Super secret infromation for authorized users only</h1>
   )
 }
 // Function for regular components
-function RegularComponents ({emotion,secondary}){
+function RegularComponents({ emotion, secondary }) {
   return (
     <p>Current emotional state is: {emotion} and {secondary}</p>
   )
 }
-function App({authorized}) {
+// Function for no data
+function NoData() {
+  return (
+    <NoData />
+  );
+}
+// https://api.github.com/users/izuru775
+function App({ authorized, user }) {
+  const [data, setData] = useState(null)
+  const [emotion, setEmotion] = useState("happy");
+  const [secondary, setSecondary] = useState("tired");
+  const [loadin, setLoadin] = useState(false);
+  const [error,setError] =useState(null)
 
-  const [emotion,setEmotion] = useState("happy");
-  const [secondary,setSecondary] = useState("tired");
-
-  useEffect(()=>{
+  useEffect(() => {
     console.log(`It's ${emotion} around here`)
-  },[emotion])
-  useEffect(()=>{
+  }, [emotion])
+  useEffect(() => {
     console.log(`It's ${secondary} around here`)
-  },[secondary])
-
-  if(authorized){
-    return <SecretComponents/>
-  }else{
+  }, [secondary])
+  useEffect(() => {
+    if (!user) return;
+    setLoadin(true)
+    fetch(`https://api.github.com/users/${user}`)
+      .then((data) => data.json())
+      .then(setData)
+      .then(()=>setLoadin(false))
+      .catch(setError)
+  }, [user]);
+  if(loadin)return <h1>Loadin...</h1>;
+  if(error)
+    return<pre>{JSON.stringify(error,null,2)}</pre>
+  if(!data) return null;
+  if (authorized) {
+    return <SecretComponents />
+  } else if (data) {
     return (
       <div className="App">
-        <RegularComponents emotion ={emotion} secondary={secondary}/>
-        <button onClick={()=>setEmotion("frustrated")}>
+        <RegularComponents emotion={emotion} secondary={secondary} />
+        <button onClick={() => setEmotion("frustrated")}>
           Frustrated
         </button>
-        <button onClick={()=>setEmotion("happy")}>
+        <button onClick={() => setEmotion("happy")}>
           Happy
         </button>
-        <button onClick={()=>setSecondary("crappy")}>
+        <button onClick={() => setSecondary("crappy")}>
           Crappy
         </button>
-        <Header name="Nakamoto" />
+        <div>
+          <p>The owner of the resturant: {data.name}</p>
+          <p>He lives in: {data.location}</p>
+          <img alt={data.login} src={data.avatar_url} height={100} />
+        </div>
+
+
+        <Header name={data.name} />
         <Main adjective="amazing" dishes={dishesObject} />
         <Footer year={new Date().getFullYear()} />
       </div>
     );
   }
-
 }
 
 export default App;
