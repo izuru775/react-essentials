@@ -1,4 +1,5 @@
-import logo from './logo.svg';
+import React from 'react';
+import kitchen from './kitchen.jpg';
 import './App.css';
 
 function Header(props) {
@@ -13,6 +14,11 @@ function Main(props) {
   return (
     <section>
       <p>We serve the most {props.adjective} food around.</p>
+      <img 
+        alt="classic looking kitchen" 
+        src={kitchen} 
+        height={200}
+      />
       <ul style={{ textAlign: "left" }}>
         {props.dishes.map((dish) =>
           <li key={dish.id}>{dish.title}</li>
@@ -39,7 +45,7 @@ const dishes = [
 ];
 
 const dishesObject = dishes.map((dish, i) => ({ id: i, title: dish }))
-console.log(dishesObject)
+// console.log(dishesObject)
 
 function App() {
   return (
