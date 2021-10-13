@@ -2,6 +2,7 @@ import React from 'react';
 import kitchen from './kitchen.jpg';
 import './App.css';
 
+// Header component
 function Header(props) {
   return (
     <header>
@@ -9,7 +10,7 @@ function Header(props) {
     </header>
   );
 }
-
+// Main component
 function Main(props) {
   return (
     <section>
@@ -27,7 +28,7 @@ function Main(props) {
     </section>
   );
 }
-
+// Footer component
 function Footer(props) {
   return (
     <footer>
@@ -37,15 +38,15 @@ function Footer(props) {
 }
 
 
-
+// Dishes array
 const dishes = [
   "Rost chicken with salad",
   "Lamb kebab",
   "Stake sandwich"
 ];
 
+// Maping an dishes array in to array of objects
 const dishesObject = dishes.map((dish, i) => ({ id: i, title: dish }))
-// console.log(dishesObject)
 
 function App() {
   return (
