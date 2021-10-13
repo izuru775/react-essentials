@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import kitchen from './kitchen.jpg';
 import './App.css';
 
@@ -59,23 +59,38 @@ function SecretComponents (){
   )
 }
 // Function for regular components
-function RegularComponents (){
+function RegularComponents ({emotion,secondary}){
   return (
-    <h1>Everyone can see this component</h1>
+    <p>Current emotional state is: {emotion} and {secondary}</p>
   )
 }
-function App(props) {
-  return(
-    <>
-      {props.authorized? <SecretComponents/>:<RegularComponents/>}
-    </>
-  );
-  if(props.authorized){
+function App({authorized}) {
+
+  const [emotion,setEmotion] = useState("happy");
+  const [secondary,setSecondary] = useState("tired");
+
+  useEffect(()=>{
+    console.log(`It's ${emotion} around here`)
+  },[emotion])
+  useEffect(()=>{
+    console.log(`It's ${secondary} around here`)
+  },[secondary])
+
+  if(authorized){
     return <SecretComponents/>
   }else{
     return (
       <div className="App">
-        <RegularComponents/>
+        <RegularComponents emotion ={emotion} secondary={secondary}/>
+        <button onClick={()=>setEmotion("frustrated")}>
+          Frustrated
+        </button>
+        <button onClick={()=>setEmotion("happy")}>
+          Happy
+        </button>
+        <button onClick={()=>setSecondary("crappy")}>
+          Crappy
+        </button>
         <Header name="Nakamoto" />
         <Main adjective="amazing" dishes={dishesObject} />
         <Footer year={new Date().getFullYear()} />
