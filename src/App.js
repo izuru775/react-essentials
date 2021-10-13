@@ -48,14 +48,41 @@ const dishes = [
 // Maping an dishes array in to array of objects
 const dishesObject = dishes.map((dish, i) => ({ id: i, title: dish }))
 
-function App() {
+/* 
+Conditional Rendering
+*/
+
+// Function for secret components
+function SecretComponents (){
   return (
-    <div className="App">
-      <Header name="Nakamoto" />
-      <Main adjective="amazing" dishes={dishesObject} />
-      <Footer year={new Date().getFullYear()} />
-    </div>
+    <h1>Super secret infromation for authorized users only</h1>
+  )
+}
+// Function for regular components
+function RegularComponents (){
+  return (
+    <h1>Everyone can see this component</h1>
+  )
+}
+function App(props) {
+  return(
+    <>
+      {props.authorized? <SecretComponents/>:<RegularComponents/>}
+    </>
   );
+  if(props.authorized){
+    return <SecretComponents/>
+  }else{
+    return (
+      <div className="App">
+        <RegularComponents/>
+        <Header name="Nakamoto" />
+        <Main adjective="amazing" dishes={dishesObject} />
+        <Footer year={new Date().getFullYear()} />
+      </div>
+    );
+  }
+
 }
 
 export default App;
