@@ -71,7 +71,9 @@ function NoData() {
   );
 }
 // https://api.github.com/users/izuru775
-function App({ authorized, user }) {
+function App() {
+  const authorized = false;
+  const user ="izuru775"
   const [data, setData] = useState(null)
   const [emotion, setEmotion] = useState("happy");
   const [secondary, setSecondary] = useState("tired");
@@ -102,6 +104,7 @@ function App({ authorized, user }) {
   } else if (data) {
     return (
       <div className="App">
+        <h1>Hello</h1>
         <RegularComponents emotion={emotion} secondary={secondary} />
         <button onClick={() => setEmotion("frustrated")}>
           Frustrated
@@ -116,6 +119,7 @@ function App({ authorized, user }) {
           <p>The owner of the resturant: {data.name}</p>
           <p>He lives in: {data.location}</p>
           <img alt={data.login} src={data.avatar_url} height={100} />
+          
         </div>
 
 
