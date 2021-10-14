@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import kitchen from './kitchen.jpg';
 import './App.css';
-
+import { Routes, Route } from "react-router-dom";
+import {
+  Home,
+  About,
+  Events,
+  Contact
+} from "./pages";
 // Header component
 function Header(props) {
   return (
@@ -73,12 +79,12 @@ function NoData() {
 // https://api.github.com/users/izuru775
 function App() {
   const authorized = false;
-  const user ="izuru775"
+  const user = "izuru775"
   const [data, setData] = useState(null)
   const [emotion, setEmotion] = useState("happy");
   const [secondary, setSecondary] = useState("tired");
   const [loadin, setLoadin] = useState(false);
-  const [error,setError] =useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     console.log(`It's ${emotion} around here`)
@@ -92,18 +98,24 @@ function App() {
     fetch(`https://api.github.com/users/${user}`)
       .then((data) => data.json())
       .then(setData)
-      .then(()=>setLoadin(false))
+      .then(() => setLoadin(false))
       .catch(setError)
   }, [user]);
-  if(loadin)return <h1>Loadin...</h1>;
-  if(error)
-    return<pre>{JSON.stringify(error,null,2)}</pre>
-  if(!data) return null;
+  if (loadin) return <h1>Loadin...</h1>;
+  if (error)
+    return <pre>{JSON.stringify(error, null, 2)}</pre>
+  if (!data) return null;
   if (authorized) {
     return <SecretComponents />
   } else if (data) {
     return (
       <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
         <h1>Hello</h1>
         <RegularComponents emotion={emotion} secondary={secondary} />
         <button onClick={() => setEmotion("frustrated")}>
@@ -119,7 +131,7 @@ function App() {
           <p>The owner of the resturant: {data.name}</p>
           <p>He lives in: {data.location}</p>
           <img alt={data.login} src={data.avatar_url} height={100} />
-          
+
         </div>
 
 
